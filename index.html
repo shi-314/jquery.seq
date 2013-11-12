@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MME2 - &Uuml;bung 2</title>
+
+    <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+
+    <link href="http://fonts.googleapis.com/css?family=Roboto:400,100,300" rel="stylesheet" type="text/css">
+
+    <link href="css/default.css" rel="stylesheet" type="text/css">
+
+	<script src="js/draggable.js"></script>
+	<script src="js/seq.js"></script>
+
+	<script>
+		$(document).ready(function() {
+			var test = new mme2.SequenceEditor();
+		});
+	</script>
+
+</head>
+<body>
+
+<div id="content">
+    <h1>Hello :)</h1>
+    <p>Lorem ipsum.</p>
+
+    <div id="toolBar">
+        <div class="toolOption">
+            <button id="cursorButton"><img src="img/cursor.png" width="12"></button>
+            <button id="penButton"><img src="img/pen.png" width="12"></button>
+            <button id="lineButton"><img src="img/line.png" width="12"></button>
+        </div>
+    </div>
+
+    <div id="sequence" class="sequenceEditor">
+		<div class="sequenceElement">Test 1</div>
+		<div class="sequenceElement">Test 2</div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,104 @@
+body {
+    font-family: Roboto;
+    margin: 0;
+    padding: 0;
+    background-color: #333333;
+    color: #FFFFFF;
+    font-weight: 100;
+
+    width: 100%;
+    height: 100%;
+    display: table;
+}
+
+h1, h2, h3, h4, h5 {
+    font-weight: 300;
+}
+
+.cursorLine {
+    cursor: crosshair;
+}
+
+.cursorDefault {
+    cursor: default;
+}
+
+#toolBar {
+    width: 800px;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    background-color: #393939;
+    border: 1px solid #2c2c2c;
+    border-bottom: 0;
+}
+
+.toolOption {
+    padding: 8px;
+
+    vertical-align: middle;
+
+    display: table-cell;
+}
+
+.toolOption button {
+    padding: 2px;
+    width: 26px;
+    height: 26px;
+    background-color: #222222;
+    border: 0;
+    box-shadow: 0px 0px 1px #000000;
+}
+
+#content {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle
+}
+
+.sequenceEditor {
+    margin-left: auto;
+    margin-right: auto;
+
+    width: 800px;
+    height: 400px;
+
+    background-color: #444444;
+    border: solid #2c2c2c 1px;
+}
+
+.sequenceElement {
+	position: relative;
+
+	width: 140px;
+
+	margin: 0;
+
+	background-color: rgba(75, 130, 200, 0.3);
+	display: block;
+
+	border-radius: 10px;
+
+	padding: 10px;
+
+	text-align: center;
+}
+
+.sequenceElement:hover {
+	background-color: rgba(58, 95, 149, 0.75);
+	cursor: pointer;
+}
+
+.sequenceElement:active {
+	cursor: all-scroll;
+}
+
+* {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
