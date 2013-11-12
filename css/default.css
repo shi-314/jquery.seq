@@ -66,6 +66,8 @@ h1, h2, h3, h4, h5 {
 
     background-color: #444444;
     border: solid #2c2c2c 1px;
+
+	overflow: hidden;
 }
 
 .sequenceElement {
@@ -75,23 +77,48 @@ h1, h2, h3, h4, h5 {
 
 	margin: 0;
 
-	background-color: rgba(75, 130, 200, 0.3);
 	display: block;
 
+	background-color: rgba(58, 95, 149, 1.0);
 	border-radius: 10px;
 
 	padding: 10px;
 
 	text-align: center;
+
+	z-index: 10;
 }
 
 .sequenceElement:hover {
-	background-color: rgba(58, 95, 149, 0.75);
+	background-color: rgba(75, 130, 200, 0.75);
 	cursor: pointer;
 }
 
 .sequenceElement:active {
 	cursor: all-scroll;
+	z-index: 50;
+}
+
+#seqInput {
+	position: absolute;
+	margin: 0;
+
+	font-weight: 300;
+	color: #7a7a7a;
+
+	font-family: Roboto;
+	background-color: #FFF;
+	display: none;
+	width: 200px;
+	height: 20px;
+	padding: 6px 6px;
+	border: none;
+	float: left;
+	z-index: 100;
+}
+
+#seqInput:focus {
+	border: none;
 }
 
 * {
@@ -101,4 +128,8 @@ h1, h2, h3, h4, h5 {
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+}
+
+*:focus {
+	outline: 0;
 }
