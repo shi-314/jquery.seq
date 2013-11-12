@@ -21,9 +21,7 @@
 
 		var _this = this;
 
-		$('.sequenceElement').drags();
-
-		$('.sequenceElement').dblclick(function (e) {
+		$(document).on('dblclick', '.sequenceElement', function (e) {
 			_this.seqInput.val(e.target.innerText);
 			_this.showTextInput({x: e.clientX + 10, y: e.clientY - 40});
 			_this.select(e.target);
@@ -47,37 +45,52 @@
 		// context menu for sequence elements
 		//
 
-		$('.sequenceElement').contextMenu('element-menu', {
-				'Connect': {
-					click: function (element) {
-						element.css({backgroundColor: 'pink'});
-					}
-				},
-				'Delete': {
-					click: function(element) {
-						element.detach();
-					}
+		this.elementContextMenu = {
+			'Connect': {
+				click: function (element) {
+					element.css({backgroundColor: 'pink'});
+				}
+			},
+			'Delete': {
+				click: function (element) {
+					element.detach();
 				}
 			}
-		);
+		};
+
+		this.elementContextMenuOptions = {
+			showMenu: function(element) {
+				_this.select(element);
+			}
+		};
 
 		//
 		// context menu for the editor
 		//
 
-		this.editor.contextMenu('element-menu', {
-				'New': {
-					click: function (element) {
+		this.editorContextMenu = {
+			'New': {
+				click: function (element, evt) {
+					var newElement = $('<div class="sequenceElement">Unnamend</div>');
+					newElement.drags();
+					newElement.contextMenu('element-menu', _this.elementContextMenu, _this.elementContextMenuOptions);
 
-					}
-				},
-				'Clear': {
-					click: function (element) {
+					_this.editor.append(newElement);
 
-					}
+					newElement.offset({
+						left: evt.pageX - newElement.outerWidth() / 2,
+						top: evt.pageY - newElement.outerHeight() / 2
+					});
+				}
+			},
+			'Clear': {
+				click: function (element) {
+					$('.sequenceElement').detach();
 				}
 			}
-		);
+		};
+
+		this.editor.contextMenu('element-menu', this.editorContextMenu);
 	}
 
 	mme2.SequenceEditor.prototype.showTextInput = function (p) {

@@ -49,7 +49,7 @@
       }
 
       menuItem.appendTo(menu).bind('click', function(e) {
-        itemOptions.click(activeElement);
+        itemOptions.click(activeElement, e);
         e.preventDefault();
       });
     });
