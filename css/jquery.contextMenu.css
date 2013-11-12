@@ -1,0 +1,21 @@
+.context-menu {
+    background-color: #F2F2F2;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+	border: 0;
+}
+.context-menu a {
+	font-size: 80%;
+	font-weight: 300;
+    color: #666666;
+    display: block;
+    padding: 8px 32px;
+	min-width: 80px;
+    text-decoration: none;
+}
+.context-menu a:hover {
+    background-color: #666666;
+    color: white;
+    text-decoration: none;
+}

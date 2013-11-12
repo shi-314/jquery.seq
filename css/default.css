@@ -71,7 +71,7 @@ h1, h2, h3, h4, h5 {
 }
 
 .sequenceElement {
-	position: relative;
+	position: absolute;
 
 	width: 140px;
 
@@ -97,6 +97,10 @@ h1, h2, h3, h4, h5 {
 .sequenceElement:active {
 	cursor: all-scroll;
 	z-index: 50;
+}
+
+.sequenceElement.selected {
+	background-color: rgba(200, 156, 24, 0.74);
 }
 
 #seqInput {
