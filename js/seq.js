@@ -26,6 +26,8 @@
 		this.elementConnections = [];
 		this.selectedElement = null;
 
+		this.currentId = 0;
+
 		var _this = this;
 
 		$(document).on('dblclick', '.sequenceElement', function (e) {
@@ -56,14 +58,14 @@
 		//
 
 		this.elementContextMenu = {
-			'Rename': {
-				click: function(element, event) {
-					_this.renameElement(element, event);
-				}
-			},
 			'Connect': {
 				click: function (element) {
 					_this.startConnection(element);
+				}
+			},
+			'Rename': {
+				click: function(element, event) {
+					_this.renameElement(element, event);
 				}
 			},
 			'Delete': {
@@ -166,16 +168,21 @@
 
 	mme2.SequenceEditor.prototype.removeElement = function(element) {
 
-		if(element == null)
+		if(element == null) {
 			$('.sequenceElement').remove();
-		else
+			this.elementConnections = []
+		} else {
+			this.removeElementConnections(element);
 			element.remove();
+		}
+
+		this.render();
 
 	}
 
 	mme2.SequenceEditor.prototype.addElement = function(event) {
 
-		var newElement = $('<div class="sequenceElement">Unnamend</div>');
+		var newElement = $('<div class="sequenceElement">Unnamend '+this.currentId+'</div>');
 
 		newElement.drags();
 		newElement.bind('dragged', {that: this}, this.onElementDragged);
@@ -187,6 +194,8 @@
 			left: event.pageX - newElement.outerWidth() / 2,
 			top: event.pageY - newElement.outerHeight() / 2
 		});
+
+		newElement.data('idx', this.currentId++);
 
 	}
 
@@ -264,6 +273,17 @@
 			element2: e2,
 			type: connectionType
 		});
+
+	}
+
+	mme2.SequenceEditor.prototype.removeElementConnections = function(element) {
+
+		for(var i=0; i < this.elementConnections.length; i++) {
+			if(this.elementConnections[i].element1.data('idx') == element.data('idx')
+				|| this.elementConnections[i].element2.data('idx') == element.data('idx')) {
+				this.elementConnections.splice(i--, 1);
+			}
+		}
 
 	}
 
