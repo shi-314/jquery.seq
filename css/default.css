@@ -38,6 +38,8 @@ h1, h2, h3, h4, h5 {
 
 	overflow: hidden;
 	position: fixed;
+
+	z-index: 5;
 }
 
 .sequenceElement {
@@ -76,7 +78,7 @@ h1, h2, h3, h4, h5 {
 	background-color: rgba(255, 143, 10, 0.73);
 }
 
-#seqInput {
+.sequenceNameInput {
 	position: absolute;
 	margin: 0;
 
@@ -96,7 +98,7 @@ h1, h2, h3, h4, h5 {
 	z-index: 100;
 }
 
-#seqInput:focus {
+.sequenceNameInput:focus {
 	border: none;
 }
 
@@ -115,4 +117,10 @@ h1, h2, h3, h4, h5 {
 
 footer{
 	color: white;
+}
+
+canvas {
+	position: absolute;
+	left: 0;
+	top: 0;
 }

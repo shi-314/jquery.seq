@@ -46,7 +46,7 @@
 				$selected.offset({
 					top: e.pageY + pos_y - drg_h,
 					left: e.pageX + pos_x - drg_w
-				});
+				}).trigger("dragged");
 			}).on("mouseup", function () {
 					$(this).off("mousemove"); // Unbind events from document
 					if ($selected !== null) {
@@ -56,6 +56,8 @@
 				});
 			e.preventDefault(); // disable selection
 		}).on("mouseup", function () {
+				if($selected == null)
+					return;
 				if (opt.handle === "") {
 					$selected.removeClass(opt.draggableClass);
 				} else {
