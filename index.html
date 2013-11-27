@@ -14,11 +14,34 @@
 	<script src="js/jquery.pressenter.js"></script>
 	<script src="js/jquery.contextMenu.js"></script>
 
-	<script src="js/seq.js"></script>
+	<script src="js/jquery.seq.js"></script>
 
 	<script>
 		$(document).ready(function() {
-			var test = new mme2.SequenceEditor();
+			$('#seq').bind('addElement', function(e, data) {
+				console.log('adding element '+data.element.text());
+			});
+
+			$('#seq').bind('removeElement', function(e, data) {
+				if(data.element)
+					console.log('removing element '+data.element.text());
+			});
+
+			$('#seq').bind('renameElement', function(e, data) {
+				console.log('renaming element to '+data.element.text());
+			});
+
+
+			$('#seq').bind('connectElements', function(e, data) {
+				console.log('connecting elements '+data.connection.element1.text()+' and '+data.connection.element2.text());
+			});
+
+			$('#seq').bind('clearElements', function(e) {
+				console.log('clear container');
+			});
+
+			$('#seq').sequence().add(440, 350, 'Start').add(920, 350, 'End');
+
 		});
 	</script>
 
@@ -28,19 +51,7 @@
 <div id="content">
     <h1>Hello :)</h1>
     <p>Welcome to your user friendly interactive sequence editor.</p>
-
-    <!-- <div id="toolBar">
-        <div class="toolOption">
-            <button id="cursorButton"><img src="img/cursor.png" width="12"></button>
-            <button id="penButton"><img src="img/pen.png" width="12"></button>
-            <button id="lineButton"><img src="img/line.png" width="12"></button>
-        </div>
-    </div> -->
-
-    <div id="sequence" class="sequenceEditor">
-		<!--<div class="sequenceElement">Test 1</div>
-		<div class="sequenceElement">Test 2</div>-->
-    </div>
+	<div id="seq" class="sequenceEditor"></div>
 </div>
 
 </body>
