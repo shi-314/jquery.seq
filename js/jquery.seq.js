@@ -49,9 +49,14 @@
             _this.renameElement($(e.target), e);
         });
 
-        $(document).on('click', '.sequenceElement', function (e) {
-            if (_this.connecting)
-                _this.stopConnection($(e.target));
+        $(document).on('click', '.anchor', function (e) {
+            e.stopPropagation();
+
+            if(_this.connecting == true && $(e.target).parent().data('idx') != _this.connectionElement1.parent().data('idx'))
+                _this.stopConnection($(e.target))
+            else
+                _this.startConnection($(e.target));
+
         });
 
         this.editor.click(function (e) {
@@ -75,11 +80,6 @@
         //
 
         this.elementContextMenu = {
-            'Connect': {
-                click: function (element) {
-                    _this.startConnection(element);
-                }
-            },
             'Rename': {
                 click: function (element, event) {
                     _this.renameElement(element, event);
@@ -264,7 +264,6 @@
         var _this = this;
         this.editor.mousemove(function (e) {
             _this.mousePosition = _this.getRelativePosition(e);
-
             _this.render();
         });
 
@@ -333,15 +332,19 @@
 
         this.elementConnections.push(conn);
 
-        this.editor.trigger('connectElements', {connection: conn});
+        this.editor.trigger('connectElements', {connection: {
+            element1: e1.parent(),
+            element2: e2.parent(),
+            type: connectionType
+        }});
 
     }
 
     mme2.SequenceEditor.prototype.removeElementConnections = function (element) {
 
         for (var i = 0; i < this.elementConnections.length; i++) {
-            if (this.elementConnections[i].element1.data('idx') == element.data('idx')
-                || this.elementConnections[i].element2.data('idx') == element.data('idx')) {
+            if (this.elementConnections[i].element1.parent().data('idx') == element.data('idx')
+                || this.elementConnections[i].element2.parent().data('idx') == element.data('idx')) {
                 this.elementConnections.splice(i--, 1);
             }
         }
