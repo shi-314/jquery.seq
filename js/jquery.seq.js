@@ -10,15 +10,17 @@
     "use strict";
 
     $.fn.sequence = function (options) {
+
         this.se = new mme2.SequenceEditor(this);
 
         this.add = function (x, y, label) {
             var element = this.se.addElement({pageX: x, pageY: y});
-            element.text(label);
+            element.setLabel(label);
             return this;
         }
 
         return this;
+
     }
 
     mme2.SequenceEditor = function (editorContainer) {
@@ -41,6 +43,8 @@
 
         var _this = this;
 
+
+
         $(document).on('dblclick', '.sequenceElement', function (e) {
             _this.renameElement($(e.target), e);
         });
@@ -60,8 +64,9 @@
         });
 
         this.seqInput.pressEnter(function () {
-            _this.selectedElement.text(_this.seqInput.val());
-            _this.editor.trigger('renameElement', {element: _this.selectedElement});
+            var label = _this.selectedElement.find('#label'+_this.selectedElement.data('idx'));
+            label.text(_this.seqInput.val());
+            _this.editor.trigger('renameElement', {element: label});
             _this.hideTextInput();
         });
 
@@ -112,6 +117,26 @@
         };
 
         this.editor.contextMenu('element-menu', this.editorContextMenu);
+
+        //
+        // anchors
+        //
+
+        $(this.canvas).mousemove(function (e) {
+            $('.anchor').each(function () {
+                var that = $(this);
+                var offset = that.offset();
+
+                var dx = e.clientX - offset.left;
+                var dy = e.clientY - offset.top;
+                var distance = Math.sqrt(dx*dx + dy*dy);
+
+                if(distance < 80)
+                    that.addClass('anchorHover');
+                else
+                    that.removeClass('anchorHover');
+            });
+        });
 
     }
 
@@ -167,9 +192,9 @@
 
     mme2.SequenceEditor.prototype.renameElement = function (element, event) {
 
+        this.select(element);
         this.seqInput.val(element.text());
         this.showTextInput({x: event.clientX + 10, y: event.clientY - 40});
-        this.select(element);
 
     }
 
@@ -191,7 +216,26 @@
 
     mme2.SequenceEditor.prototype.addElement = function (event) {
 
-        var newElement = $('<div class="sequenceElement">Unnamend ' + this.currentId + '</div>');
+        var leftAnchor = $('<div class="anchor left"/>');
+        var rightAnchor = $('<div class="anchor right"/>');
+        var topAnchor = $('<div class="anchor top"/>');
+        var bottomAnchor = $('<div class="anchor bottom"/>');
+
+        var label = $('<div class="label" id="label'+this.currentId+'">Unnamed ' + this.currentId + '</div>');
+
+        var newElement = $('<div class="sequenceElement">' + '</div>');
+
+        newElement.labelElement = label;
+        newElement.append(label);
+        newElement.append(leftAnchor, rightAnchor, topAnchor, bottomAnchor);
+
+        newElement.setLabel = function(value) {
+            this.labelElement.text(value);
+        }
+
+        newElement.getLabel = function() {
+            return this.labelElement.text();
+        }
 
         newElement.drags();
         newElement.bind('dragged', {that: this}, this.onElementDragged);

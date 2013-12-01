@@ -124,3 +124,46 @@ canvas {
 	left: 0;
 	top: 0;
 }
+
+.anchor {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #AE9AE8;
+    border-radius: 32px;
+    opacity: 0.0;
+    transition: opacity .25s ease-in-out;
+    z-index: 5;
+}
+
+.anchorHover {
+    opacity: 1.0;
+}
+
+.anchor.left {
+    top: 50%;
+    margin-top: -5px;
+    left: -5px;
+}
+
+.anchor.right {
+    top: 50%;
+    margin-top: -5px;
+    right: -5px;
+}
+
+.anchor.top {
+    left: 50%;
+    margin-left: -5px;
+    top: -5px;
+}
+
+.anchor.bottom {
+    left: 50%;
+    margin-left: -5px;
+    bottom: -5px;
+}
+
+.label {
+    pointer-events: none;
+}
