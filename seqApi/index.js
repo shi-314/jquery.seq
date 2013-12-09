@@ -1,9 +1,12 @@
-var http = require("http");
+var express = require('express');
 
-http.createServer(function(request, response) {
-    response.writeHead(200, {"Content-Type": "text/plain"});
-    response.write("Hello World");
-    response.end();
-}).listen(8888);
+app = express();
 
+app.get('/getList', function (req, res) {
+	res.json({
+		status: 'well well well...'
+	})
+});
 
+app.listen(8000);
+console.log('Listening ...');
