@@ -1,19 +1,24 @@
-var version = '/v1';
-var express = require('express');
+var version = '/v1',
+	port = 8080,
+	express = require('express'),
+	env = process.argv[2] || process.env.NODE_ENV || 'development',
+	app = express();
 
-app = express();
+app.configure('development', function() {
+	app.use(express.bodyParser());
+});
+
 
 app.get(version+'/getList/:mail', function (req, res) {
 	res.json({
 		status: 'well well well...'+req.params.mail
-	})
+	});
 });
 
 app.post(version+'/addSeq/:mail', function (req, res) {
-	res.json({
-		status: req.param
-	})
+	console.log(req.body);
+	res.json(req.body);
 });
 
-app.listen(8000);
-console.log('Listening ...');
+app.listen(8080);
+console.log('Listening on port ' + port + ' ...');
