@@ -14,10 +14,18 @@
         this.se = new mme2.SequenceEditor(this);
 
         this.add = function (x, y, label) {
-            var element = this.se.addElement({pageX: x, pageY: y});
+
+			var element = this.se.addElement({pageX: x, pageY: y});
             element.setLabel(label);
             return this;
+
         }
+
+		this.getElements = function () {
+
+			return this.elements;
+
+		}
 
         return this;
 

@@ -40,7 +40,9 @@
 				console.log('clear container');
 			});
 
-			$('#seq').sequence().add(440, 350, 'Start').add(920, 350, 'End');
+			var seq = $('#seq').sequence().add(440, 350, 'Start').add(920, 350, 'End');
+
+			console.log(seq.getElements());
 
 		});
 	</script>
