@@ -11,11 +11,16 @@
 
     $.fn.sequence = function (options) {
 
+		var _this = this;
         this.se = new mme2.SequenceEditor(this);
 
         this.add = function (x, y, label) {
 
-			var element = this.se.addElement({pageX: x, pageY: y});
+			var canvasRect = _this.se.canvas.getBoundingClientRect();
+			var canvasX = canvasRect.left;
+			var canvasY = canvasRect.top;
+
+			var element = this.se.addElement({pageX: canvasX + x, pageY: canvasY + y});
             element.setLabel(label);
             return this;
 
@@ -23,7 +28,20 @@
 
 		this.getElements = function () {
 
-			return this.elements;
+			var elementsData = [];
+			var elements = this.se.getElements();
+
+			console.log(elements.length);
+
+			for(var i = 0; i < elements.length; i++) {
+				elementsData.push({
+					idx: elements[i].data('idx'),
+					label: elements[i].getLabel(),
+					position: elements[i].getPosition()
+				});
+			}
+
+			return elementsData;
 
 		}
 
@@ -34,6 +52,7 @@
     mme2.SequenceEditor = function (editorContainer) {
 
         console.log("creating sequence editor...");
+
         this.editor = editorContainer || $('#sequence');
         this.seqInput = $('<input type="text" class="sequenceNameInput">');
         this.canvas = $('<canvas width="' + this.editor.innerWidth() + '" height="' + this.editor.innerHeight() + '"></canvas>')[0];
@@ -46,6 +65,7 @@
 
         this.elementConnections = [];
         this.selectedElement = null;
+		this.elements = [];
 
         this.currentId = 0;
 
@@ -233,6 +253,8 @@
 
         var newElement = $('<div class="sequenceElement">' + '</div>');
 
+		var _this = this;
+
         newElement.labelElement = label;
         newElement.append(label);
         newElement.append(leftAnchor, rightAnchor, topAnchor, bottomAnchor);
@@ -245,6 +267,21 @@
             return this.labelElement.text();
         }
 
+		newElement.getPosition = function() {
+
+			var canvasRect = _this.canvas.getBoundingClientRect();
+			var canvasX = canvasRect.left;
+			var canvasY = canvasRect.top;
+
+			var offset = this.topLeftOffset;
+
+			return {
+				x: offset.left - canvasX,
+				y: offset.top - canvasY
+			};
+
+		}
+
         newElement.drags();
         newElement.bind('dragged', {that: this}, this.onElementDragged);
         newElement.contextMenu('element-menu', this.elementContextMenu, this.elementContextMenuOptions);
@@ -256,9 +293,16 @@
             top: event.pageY - newElement.outerHeight() / 2
         });
 
+		newElement.topLeftOffset = {
+			left: event.pageX,
+			top: event.pageY
+		}
+
         newElement.data('idx', this.currentId++);
 
         this.editor.trigger('addElement', {element: newElement});
+
+		this.elements.push(newElement);
 
         return newElement;
 
@@ -364,5 +408,11 @@
         e.data.that.render();
 
     }
+
+	mme2.SequenceEditor.prototype.getElements = function() {
+
+		return this.elements;
+
+	}
 
 })(window.mme2 = window.mme2 || {});
