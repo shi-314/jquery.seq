@@ -42,7 +42,9 @@
 
 			var seq = $('#seq').sequence().add(200, 200, 'Start').add(600, 200, 'End');
 
-			console.log(seq.getElements());
+			// console.log(seq.getElements());
+
+			seq.connect(0, 1, 'right', 'left');
 
 		});
 	</script>

@@ -45,6 +45,48 @@
 
 		}
 
+		this.getConnections = function () {
+
+			var connections = this.se.elementConnections;
+			var connectionsData = [];
+
+			for(var i = 0; i < connections.length; i++) {
+				var c = connections[i];
+				connectionsData.push({
+					e1: c.element1.data('idx'),
+					e2: c.element2.data('idx')
+				});
+			}
+
+			return connectionsData;
+
+		}
+
+		this.connect = function(id1, id2, anchor1, anchor2) {
+
+			var e1 = this.se.getElementById(id1).children('.'+anchor1);
+			var e2 = this.se.getElementById(id2).children('.'+anchor2);
+
+			var conn = {
+				element1: e1,
+				element2: e2,
+				element1Anchor: anchor1,
+				element2Anchor: anchor2,
+			};
+
+			this.se.elementConnections.push(conn);
+
+			this.se.editor.trigger('connectElements', {connection: {
+				element1: e1.parent(),
+				element2: e2.parent(),
+				element1Anchor: anchor1,
+				element2Anchor: anchor2
+			}});
+
+			this.se.render();
+
+		}
+
         return this;
 
     }
@@ -374,12 +416,18 @@
 
     }
 
-    mme2.SequenceEditor.prototype.connectElements = function (e1, e2, connectionType) {
+    mme2.SequenceEditor.prototype.connectElements = function (e1, e2) {
+
+		// get anchor class names to specify which anchor has been selected
+
+		var e1Class = e1.attr('class').split(/\s+/)[1];
+		var e2Class = e2.attr('class').split(/\s+/)[1];
 
         var conn = {
             element1: e1,
             element2: e2,
-            type: connectionType
+			element1Anchor: e1Class,
+			element2Anchor: e2Class,
         };
 
         this.elementConnections.push(conn);
@@ -387,10 +435,23 @@
         this.editor.trigger('connectElements', {connection: {
             element1: e1.parent(),
             element2: e2.parent(),
-            type: connectionType
-        }});
+			element1Anchor: e1Class,
+			element2Anchor: e2Class
+		}});
 
     }
+
+	mme2.SequenceEditor.prototype.getElementById = function(id) {
+
+		for(var i = 0; i < this.elements.length; i++) {
+			if(this.elements[i].data('idx') === id) {
+				return this.elements[i];
+			}
+		}
+
+		return null;
+
+	}
 
     mme2.SequenceEditor.prototype.removeElementConnections = function (element) {
 
