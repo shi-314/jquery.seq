@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>MME2 - &Uuml;bung 2</title>
+    <title>seq.editor</title>
 
     <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
 
@@ -17,7 +17,26 @@
 	<script src="js/jquery.seq.js"></script>
 
 	<script>
+
+		var lastBoxContainer = null;
+
+		var showBox = function($container) {
+			$('#greyout').fadeIn();
+			$container.fadeIn();
+			lastBoxContainer = $container;
+		}
+
+		var hideBox = function() {
+			$('#greyout').fadeOut();
+			lastBoxContainer.fadeOut();
+		}
+
 		$(document).ready(function() {
+
+			//
+			// sequence editor
+			//
+
 			$('#seq').bind('addElement', function(e, data) {
 				console.log('adding element '+data.element.text());
 			});
@@ -44,6 +63,13 @@
 
 			seq.connect(0, 1, 'right', 'left');
 
+			//
+			// user interface
+			//
+
+			
+
+
 			console.log(seq.getData());
 		});
 	</script>
@@ -51,10 +77,20 @@
 </head>
 <body>
 
+<div id="greyout"></div>
+<div id="login" class="box">
+	<form id="loginForm">
+		<input id="email" type="email" placeholder="E-Mail"/>
+		<button type="submit">Continue</button>
+	</form>
+</div>
+
 <div id="content">
     <h1>Hello :)</h1>
     <p>Welcome to your user friendly interactive sequence editor.</p>
+
 	<div id="seq" class="sequenceEditor"></div>
+	<button>Login</button>
 </div>
 
 </body>
