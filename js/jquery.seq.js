@@ -1,5 +1,5 @@
 /**
- * MME2-2
+ * MME2-3
  *
  * @author Shivan Taher
  * @date 30.10.13
@@ -7,7 +7,7 @@
 
 (function (mme2) {
 
-    "use strict";
+    'use strict';
 
     $.fn.sequence = function (options) {
 
@@ -184,6 +184,16 @@
         //
 
         this.editorContextMenu = {
+			'Save': {
+				click: function(element, event) {
+					_this.editor.trigger('save')
+				}
+			},
+			'Load': {
+				click: function(element, event) {
+					_this.editor.trigger('load')
+				}
+			},
             'New': {
                 click: function (element, event) {
                     _this.addElement(event);
@@ -284,9 +294,11 @@
         if (element == null) {
             this.editor.find('.sequenceElement').remove();
             this.elementConnections = [];
+			this.elements = [];
         } else {
             this.removeElementConnections(element);
             element.remove();
+			this.elements.splice(this.elements.indexOf(element), 1);
         }
 
         this.editor.trigger('removeElement', {element: element});

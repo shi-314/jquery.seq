@@ -15,20 +15,30 @@
 	<script src="js/jquery.contextMenu.js"></script>
 
 	<script src="js/jquery.seq.js"></script>
+	<script src="js/seq.client.js"></script>
 
 	<script>
 
-		var lastBoxContainer = null;
+		//
+		// user interface
+		//
 
-		var showBox = function($container) {
+		var lastBoxContainer = null;
+		var client = null;
+		var onHide = null;
+
+		var showBox = function($container, callback) {
 			$('#greyout').fadeIn();
 			$container.fadeIn();
 			lastBoxContainer = $container;
+			onHide = callback;
 		}
 
 		var hideBox = function() {
 			$('#greyout').fadeOut();
 			lastBoxContainer.fadeOut();
+			if(onHide)
+				onHide();
 		}
 
 		$(document).ready(function() {
@@ -59,38 +69,76 @@
 				console.log('clear container');
 			});
 
+			$('#seq').bind('save', function(e) {
+				showBox($('#save'), function() {
+					var name = $('#name').val();
+					var data = seq.getData();
+					data.name = name;
+					$('#seqName').text(name);
+					client.save(data);
+				});
+			});
+
+			$('#seq').bind('load', function(e) {
+				client.load(null);
+			});
+
 			var seq = $('#seq').sequence().add(200, 200, 'Start').add(600, 200, 'End');
 
 			seq.connect(0, 1, 'right', 'left');
 
-			//
-			// user interface
-			//
-
-			
-
-
 			console.log(seq.getData());
+
+			//
+			// forms and validation
+			//
+
+			$('#loginForm').submit(function() {
+				var email = $('#email').val();
+				client = new mme2.Client(email);
+				$('#userMail').text(email);
+				hideBox();
+				return false;
+			});
+
+			$('#saveForm').submit(function() {
+				hideBox();
+				return false;
+			});
+
+			showBox($('#login'));
+
 		});
 	</script>
 
 </head>
 <body>
 
+<div id="content">
+	<h1>Hello :)</h1>
+	<p>Welcome to your user friendly interactive sequence editor.</p>
+
+	<div id="info" class="infoBar">
+		<div id="seqName">Unnamed</div>
+		<div id="userMail">-</div>
+	</div>
+	<div id="seq" class="sequenceEditor"></div>
+</div>
+
 <div id="greyout"></div>
+
 <div id="login" class="box">
 	<form id="loginForm">
-		<input id="email" type="email" placeholder="E-Mail"/>
+		<input id="email" type="email" placeholder="E-Mail" required/>
 		<button type="submit">Continue</button>
 	</form>
 </div>
 
-<div id="content">
-    <h1>Hello :)</h1>
-    <p>Welcome to your user friendly interactive sequence editor.</p>
-
-	<div id="seq" class="sequenceEditor"></div>
-	<button>Login</button>
+<div id="save" class="box">
+	<form id="saveForm">
+		<input id="name" type="text" placeholder="Name" required/>
+		<button type="submit">Save</button>
+	</form>
 </div>
 
 </body>

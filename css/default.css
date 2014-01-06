@@ -26,6 +26,41 @@ h1, h2, h3, h4, h5 {
 	margin-left: -50%;
 }
 
+.infoBar {
+	width: 792px;
+
+	left: 50%;
+	margin-left: -399px;
+
+	background-color: #666666;
+
+	font-weight: 300;
+
+	overflow: hidden;
+	position: relative;
+
+	padding: 4px;
+	font-size: 8pt;
+
+	z-index: 7;
+}
+
+#userMail {
+	margin-left: 50px;
+	display: inline;
+	text-align: right;
+	color: #aaaaaa;
+	position: absolute;
+	right: 0;
+	padding-right: 8px;
+}
+
+#seqName {
+	left: 50%;
+	text-align: left;
+	display: inline-block;
+}
+
 .sequenceEditor {
     width: 800px;
     height: 400px;
@@ -62,6 +97,8 @@ h1, h2, h3, h4, h5 {
 
 	left: 0px;
 	top: 0px;
+
+	font-weight: 300;
 }
 
 .sequenceElement:hover {
