@@ -15,7 +15,7 @@ app.get(version+'/getList/:mail', function (req, res) {
 	});
 });
 
-app.post(version+'/addSeq/:mail', function (req, res) {
+app.put(version+'/addSeq/:mail', function (req, res) {
 	console.log(req.body);
 	res.json(req.body);
 });

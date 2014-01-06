@@ -53,8 +53,10 @@
 			for(var i = 0; i < connections.length; i++) {
 				var c = connections[i];
 				connectionsData.push({
-					e1: c.element1.data('idx'),
-					e2: c.element2.data('idx')
+					element1: c.element1.parent().data('idx'),
+					element2: c.element2.parent().data('idx'),
+					element1Anchor: c.element1Anchor,
+					element2Anchor: c.element2Anchor
 				});
 			}
 
@@ -62,7 +64,16 @@
 
 		}
 
-		this.connect = function(id1, id2, anchor1, anchor2) {
+		this.getData = function () {
+
+			return {
+				elements: this.getElements(),
+				connections: this.getConnections()
+			};
+
+		}
+
+		this.connect = function (id1, id2, anchor1, anchor2) {
 
 			var e1 = this.se.getElementById(id1).children('.'+anchor1);
 			var e2 = this.se.getElementById(id2).children('.'+anchor2);
@@ -427,7 +438,7 @@
             element1: e1,
             element2: e2,
 			element1Anchor: e1Class,
-			element2Anchor: e2Class,
+			element2Anchor: e2Class
         };
 
         this.elementConnections.push(conn);
