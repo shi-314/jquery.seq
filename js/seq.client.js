@@ -9,10 +9,11 @@
 
 	'use strict';
 
-	mme2.Client = function (email) {
+	mme2.Client = function (email, options) {
 
 		console.log('user identified as '+email);
 		this.email = email;
+		this.options = options || { server: 'http://localhost:8080/v1' };
 
 	}
 
@@ -20,7 +21,19 @@
 
 		data.email = this.email;
 
-		console.log('saving '+data.elements.length+" elements ...");
+		console.log('saving '+data.elements.length+' elements ...');
+
+		$.ajax({
+			url: this.options.server+'/add',
+			type: 'PUT',
+			data: data,
+			dataType: 'json',
+			crossDomain: true,
+			success: function (res) {
+				console.log('response: '+res);
+			}
+		});
+
 		//console.log(data);
 
 	}

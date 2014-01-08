@@ -31,8 +31,6 @@
 			var elementsData = [];
 			var elements = this.se.getElements();
 
-			console.log(elements.length);
-
 			for(var i = 0; i < elements.length; i++) {
 				elementsData.push({
 					idx: elements[i].data('idx'),
