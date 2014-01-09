@@ -114,16 +114,17 @@
 
 				client.list(function (items) {
 					list = items;
-					
+
 					var select = $('#openSelect');
 					select.html('');
 
 					for (var i = 0; i < items.length; i++) {
-						select.append('<option value="' + items[i]._id + '">' + items[i].name + '</option>');
+						select.append('<option value="' + i + '">' + items[i].name + '</option>');
 					}
 
 					$('#openForm').submit(function (e) {
-						console.log(select.val());
+						console.log('loading sequence ' + select.val());
+						seq.setData(list[parseInt(select.val())]);
 						hideBox();
 						return false;
 					});
