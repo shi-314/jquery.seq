@@ -7,6 +7,7 @@ var version = '/v1',
 	ObjectID = require('mongodb').ObjectID;
 
 app.configure('development', function () {
+
 	app.use(express.bodyParser());
 
 	mongo.connect("mongodb://localhost/seq", function (err, db) {
@@ -23,22 +24,28 @@ app.configure('development', function () {
 
 		console.log('Connected to mongodb');
 	});
+
 });
 
 app.all('*', function (req, res, next) {
+
 	res.header('Access-Control-Allow-Origin', '*');
 	res.header('Access-Control-Allow-Headers', 'X-Requested-With');
 	res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
 	next();
+
 });
 
 app.get(version + '/getList/:mail', function (req, res) {
+
 	res.json({
 		status: 'well well well...' + req.params.mail
 	});
+
 });
 
 app.put(version + '/save', function (req, res) {
+
 	var obj = {
 		email: req.body.email,
 		name: req.body.name,
@@ -46,10 +53,10 @@ app.put(version + '/save', function (req, res) {
 		connections: req.body.connections
 	};
 
-	if(req.body._id !== undefined) obj._id = ObjectID(req.body._id);
+	if (req.body._id !== undefined) obj._id = ObjectID(req.body._id);
 
 	app.sequences.save(obj, function (err, mongoRes) {
-		if(err !== null) {
+		if (err !== null) {
 			console.log(err)
 		} else {
 			console.log('added new sequence "' + obj.name + '" for ' + obj.email + ' with id ' + obj._id);
@@ -57,6 +64,16 @@ app.put(version + '/save', function (req, res) {
 			console.log(obj);
 		}
 	});
+
+});
+
+app.get(version + '/list/:email', function (req, res) {
+
+	console.log('fetching list for ' + req.params.email);
+	var list = app.sequences.find({email: req.params.email}).toArray(function (what, list) {
+		res.json(list);
+	});
+
 });
 
 app.listen(8080);

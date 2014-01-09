@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>seq.editor</title>
+	<title>seq.editor</title>
 
-    <!--<script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>-->
+	<!--<script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>-->
 	<script src="/js/jquery-1.7.2.min.js"></script>
 
-    <link href="http://fonts.googleapis.com/css?family=Roboto:400,100,300" rel="stylesheet" type="text/css">
+	<link href="http://fonts.googleapis.com/css?family=Roboto:400,100,300" rel="stylesheet" type="text/css">
 
-    <link href="css/default.css" rel="stylesheet" type="text/css">
+	<link href="css/default.css" rel="stylesheet" type="text/css">
 	<link href="css/jquery.contextMenu.css" rel="stylesheet" type="text/css">
 
 	<script src="js/jquery.draggable.js"></script>
@@ -30,54 +30,67 @@
 		var sequenceId = null;
 		var lastName = null;
 
-		var showBox = function($container, callback) {
+		var showBox = function ($container, callback) {
 			$('#greyout').fadeIn();
 			$container.fadeIn();
 			lastBoxContainer = $container;
 			onHide = callback;
 		}
 
-		var hideBox = function() {
+		var hideBox = function () {
 			$('#greyout').fadeOut();
 			lastBoxContainer.fadeOut();
-			if(onHide)
+			if (onHide)
 				onHide();
 		}
 
-		$(document).ready(function() {
+		$(document).ready(function () {
 
 			//
 			// sequence editor
 			//
 
-			$('#seq').bind('addElement', function(e, data) {
-				console.log('adding element '+data.element.text());
+			$('#seq').bind('addElement', function (e, data) {
+
+				console.log('adding element ' + data.element.text());
+
 			});
 
-			$('#seq').bind('removeElement', function(e, data) {
-				if(data.element)
-					console.log('removing element '+data.element.text());
+			$('#seq').bind('removeElement', function (e, data) {
+
+				if (data.element)
+					console.log('removing element ' + data.element.text());
+
 			});
 
-			$('#seq').bind('renameElement', function(e, data) {
-				console.log('renaming element to '+data.element.text());
+			$('#seq').bind('renameElement', function (e, data) {
+
+				console.log('renaming element to ' + data.element.text());
+
 			});
 
 
-			$('#seq').bind('connectElements', function(e, data) {
-				console.log('connecting elements '+data.connection.element1.text()+' and '+data.connection.element2.text());
+			$('#seq').bind('connectElements', function (e, data) {
+
+				console.log('connecting elements ' + data.connection.element1.text() + ' and ' + data.connection.element2.text());
+
 			});
 
-			$('#seq').bind('clearElements', function(e) {
+			$('#seq').bind('clearElements', function (e) {
+
 				console.log('clear container');
+
 			});
 
-			$('#seq').bind('save', function(e) {
-				showBox($('#save'), function() {
+			$('#seq').bind('save', function (e) {
+
+				showBox($('#save'), function () {
+					$('#seqStatus').text('saving...');
+
 					var name = $('#name').val();
 					var data = seq.getData();
 
-					if(name === lastName && sequenceId !== null)
+					if (name === lastName && sequenceId !== null)
 						data._id = sequenceId;
 					else
 						console.log('save as new sequence');
@@ -87,15 +100,36 @@
 					$('#seqName').text(name);
 
 					client.save(data, function (id) {
-						console.log('saved successfully with id '+id);
+						$('#seqStatus').text('saved');
+						console.log('saved successfully with id ' + id);
 						sequenceId = id;
 						lastName = name;
 					});
 				});
+
 			});
 
-			$('#seq').bind('load', function(e) {
-				client.load(null);
+			$('#seq').bind('open', function (e) {
+
+				client.load(function (list) {
+					console.log(list);
+
+					var select = $('#openSelect');
+					select.html('');
+
+					for(var i = 0; i < list.length; i++) {
+						select.append('<option value="'+list[i]._id+'">'+list[i].name+'</option>');
+					}
+
+					$('#openForm').submit(function (e) {
+						console.log(select.val());
+						hideBox();
+						return false;
+					});
+
+					showBox($('#open'));
+				});
+
 			});
 
 			var seq = $('#seq').sequence().add(200, 200, 'Start').add(600, 200, 'End');
@@ -108,7 +142,7 @@
 			// forms and validation
 			//
 
-			$('#loginForm').submit(function() {
+			$('#loginForm').submit(function () {
 				var email = $('#email').val();
 				client = new mme2.Client(email);
 				$('#userMail').text(email);
@@ -116,7 +150,7 @@
 				return false;
 			});
 
-			$('#saveForm').submit(function() {
+			$('#saveForm').submit(function () {
 				hideBox();
 				return false;
 			});
@@ -131,11 +165,12 @@
 
 <div id="content">
 	<h1>Hello :)</h1>
+
 	<p>Welcome to your user friendly interactive sequence editor.</p>
 
 	<div id="info" class="infoBar">
 		<div id="seqName">Unnamed</div>
-		<div id="seqStatus">Not saved</div>
+		<div id="seqStatus">not saved</div>
 		<div id="userMail">-</div>
 	</div>
 	<div id="seq" class="sequenceEditor"></div>
@@ -154,6 +189,15 @@
 	<form id="saveForm" action="javascript:void(0);">
 		<input id="name" type="text" placeholder="Name" required/>
 		<button type="submit">Save</button>
+	</form>
+</div>
+
+<div id="open" class="box">
+	<form id="openForm" action="javascript:void(0);">
+		<select id="openSelect">
+			<option value="0">My Seq 0</option>
+		</select>
+		<button type="submit">Open</button>
 	</form>
 </div>
 

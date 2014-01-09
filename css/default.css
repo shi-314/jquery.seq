@@ -61,6 +61,13 @@ h1, h2, h3, h4, h5 {
 	display: inline-block;
 }
 
+#seqStatus {
+	position: absolute;
+	left: 8px;
+	display: inline;
+	color: #aaaaaa;
+}
+
 .sequenceEditor {
     width: 800px;
     height: 400px;

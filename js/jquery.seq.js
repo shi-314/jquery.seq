@@ -184,7 +184,7 @@
         this.editorContextMenu = {
 			'Open': {
 				click: function(element, event) {
-					_this.editor.trigger('load')
+					_this.editor.trigger('open')
 				}
 			},
 			'Save': {

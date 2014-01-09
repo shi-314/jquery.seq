@@ -11,7 +11,7 @@
 
 	mme2.Client = function (email, options) {
 
-		console.log('user identified as '+email);
+		console.log('user identified as ' + email);
 		this.email = email;
 		this.options = options || { server: 'http://localhost:8080/v1' };
 
@@ -22,22 +22,37 @@
 		data.email = this.email;
 
 		$.ajax({
-			url: this.options.server+'/save',
+			url: this.options.server + '/save',
 			type: 'PUT',
 			data: data,
 			dataType: 'json',
 			crossDomain: true,
 			success: function (res) {
-				if(onComplete)
+				if (onComplete)
 					onComplete(res._id);
 			}
 		});
 
 	}
 
-	mme2.Client.prototype.load = function (id) {
+	mme2.Client.prototype.load = function (onComplete) {
 
-		console.log('load ... not implemented yet');
+		$.ajax({
+			url: this.options.server + '/list/'+encodeURIComponent(this.email),
+			type: 'GET',
+			dataType: 'json',
+			crossDomain: true,
+			success: function (res) {
+				if (onComplete)
+					onComplete(res);
+			}
+		});
+
+	}
+
+	mme2.Client.prototype.list = function (email) {
+
+		console.log('list for ' + email + ': ');
 
 	}
 
