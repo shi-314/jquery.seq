@@ -125,6 +125,7 @@
 					$('#openForm').submit(function (e) {
 						console.log('loading sequence ' + select.val());
 						seq.setData(list[parseInt(select.val())]);
+						$('#seqStatus').text('saved');
 						hideBox();
 						return false;
 					});
@@ -137,8 +138,6 @@
 			var seq = $('#seq').sequence().add(200, 200, 'Start').add(600, 200, 'End');
 
 			seq.connect(0, 1, 'right', 'left');
-
-			console.log(seq.getData());
 
 			//
 			// forms and validation

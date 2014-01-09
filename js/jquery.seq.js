@@ -22,6 +22,7 @@
 
 			var element = this.se.addElement({pageX: canvasX + x, pageY: canvasY + y});
 			element.setLabel(label);
+
 			return this;
 
 		}
@@ -73,7 +74,6 @@
 
 		this.setData = function (data) {
 
-			console.log(data);
 			this.se.removeElement(null);
 
 			var elements = data.elements;
@@ -170,7 +170,7 @@
 
 		this.seqInput.pressEnter(function () {
 			var label = _this.selectedElement.find('#label' + _this.selectedElement.data('idx'));
-			label.text(_this.seqInput.val());
+			label.html(_this.seqInput.val());
 			_this.editor.trigger('renameElement', {element: label});
 			_this.hideTextInput();
 		});
@@ -345,11 +345,11 @@
 		newElement.append(leftAnchor, rightAnchor, topAnchor, bottomAnchor);
 
 		newElement.setLabel = function (value) {
-			this.labelElement.text(value);
+			this.labelElement.html(value);
 		}
 
 		newElement.getLabel = function () {
-			return this.labelElement.text();
+			return this.labelElement.html();
 		}
 
 		newElement.getPosition = function () {
@@ -358,11 +358,11 @@
 			var canvasX = canvasRect.left;
 			var canvasY = canvasRect.top;
 
-			var offset = this.topLeftOffset;
+			var offset = this.offset();
 
 			return {
-				x: offset.left - canvasX,
-				y: offset.top - canvasY
+				x: offset.left - canvasX + newElement.outerWidth() / 2,
+				y: offset.top - canvasY + newElement.outerHeight() / 2
 			};
 
 		}
