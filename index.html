@@ -27,6 +27,8 @@
 		var lastBoxContainer = null;
 		var client = null;
 		var onHide = null;
+		var sequenceId = null;
+		var lastName = null;
 
 		var showBox = function($container, callback) {
 			$('#greyout').fadeIn();
@@ -74,9 +76,21 @@
 				showBox($('#save'), function() {
 					var name = $('#name').val();
 					var data = seq.getData();
+
+					if(name === lastName && sequenceId !== null)
+						data._id = sequenceId;
+					else
+						console.log('save as new sequence');
+
 					data.name = name;
+
 					$('#seqName').text(name);
-					client.save(data);
+
+					client.save(data, function (id) {
+						console.log('saved successfully with id '+id);
+						sequenceId = id;
+						lastName = name;
+					});
 				});
 			});
 
@@ -121,6 +135,7 @@
 
 	<div id="info" class="infoBar">
 		<div id="seqName">Unnamed</div>
+		<div id="seqStatus">Not saved</div>
 		<div id="userMail">-</div>
 	</div>
 	<div id="seq" class="sequenceEditor"></div>
@@ -130,7 +145,7 @@
 
 <div id="login" class="box">
 	<form id="loginForm" action="javascript:void(0);">
-		<input id="email" type="email" placeholder="E-Mail" required/>
+		<input id="email" type="email" placeholder="E-Mail" value="shi.taher@gmail.com" required/>
 		<button type="submit">Continue</button>
 	</form>
 </div>

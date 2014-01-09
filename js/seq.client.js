@@ -17,25 +17,21 @@
 
 	}
 
-	mme2.Client.prototype.save = function (data) {
+	mme2.Client.prototype.save = function (data, onComplete) {
 
 		data.email = this.email;
 
-		console.log('saving '+data.elements.length+' elements ...');
-
 		$.ajax({
-			url: this.options.server+'/add',
+			url: this.options.server+'/save',
 			type: 'PUT',
 			data: data,
 			dataType: 'json',
 			crossDomain: true,
 			success: function (res) {
-				console.log('Response: ');
-				console.log(res);
+				if(onComplete)
+					onComplete(res._id);
 			}
 		});
-
-		//console.log(data);
 
 	}
 
