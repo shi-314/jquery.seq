@@ -35,7 +35,7 @@
 
 	}
 
-	mme2.Client.prototype.load = function (onComplete) {
+	mme2.Client.prototype.list = function (onComplete) {
 
 		$.ajax({
 			url: this.options.server + '/list/'+encodeURIComponent(this.email),
@@ -47,12 +47,6 @@
 					onComplete(res);
 			}
 		});
-
-	}
-
-	mme2.Client.prototype.list = function (email) {
-
-		console.log('list for ' + email + ': ');
 
 	}
 

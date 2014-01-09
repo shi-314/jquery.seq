@@ -29,6 +29,7 @@
 		var onHide = null;
 		var sequenceId = null;
 		var lastName = null;
+		var list = null;
 
 		var showBox = function ($container, callback) {
 			$('#greyout').fadeIn();
@@ -111,14 +112,14 @@
 
 			$('#seq').bind('open', function (e) {
 
-				client.load(function (list) {
-					console.log(list);
-
+				client.list(function (items) {
+					list = items;
+					
 					var select = $('#openSelect');
 					select.html('');
 
-					for(var i = 0; i < list.length; i++) {
-						select.append('<option value="'+list[i]._id+'">'+list[i].name+'</option>');
+					for (var i = 0; i < items.length; i++) {
+						select.append('<option value="' + items[i]._id + '">' + items[i].name + '</option>');
 					}
 
 					$('#openForm').submit(function (e) {
