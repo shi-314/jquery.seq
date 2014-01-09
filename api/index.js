@@ -10,14 +10,23 @@ app.configure('development', function () {
 
 	mongo.connect("mongodb://localhost/seq", function (err, db) {
 		if (err) { return console.dir(err); }
-		app.sequences = db.collection('seq', function (err, collection) {});
+
+		db.collection('seq', function (err, collection) {
+			if(err !== null)
+				console.log(err);
+			else
+				app.sequences = collection;
+		});
+
+		console.log('Connected to mongodb');
 	});
 });
 
-app.all('/', function (req, res, next) {
+app.all('*', function (req, res, next) {
 	console.log('test');
 	res.header('Access-Control-Allow-Origin', '*');
 	res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+	res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
 	next();
 });
 
@@ -28,8 +37,9 @@ app.get(version + '/getList/:mail', function (req, res) {
 });
 
 app.put(version + '/add', function (req, res) {
-	console.log(app.db);
-	app.sequences.put(req.body);
+	app.sequences.save(req.body, function(err, res) {
+		console.log('added sequence "'+res.name+'" for '+res.email+' with id '+res._id);
+	});
 	res.json(req.body);
 });
 

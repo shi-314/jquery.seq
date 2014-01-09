@@ -30,7 +30,8 @@
 			dataType: 'json',
 			crossDomain: true,
 			success: function (res) {
-				console.log('response: '+res);
+				console.log('Response: ');
+				console.log(res);
 			}
 		});
 
