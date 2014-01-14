@@ -77,4 +77,4 @@ Example Output
 	]
 ```
 
-Error: If you miss the e mail parameter
+Error: There are no error, when there is no data for the given email you will receive an emptry array.
