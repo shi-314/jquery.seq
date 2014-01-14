@@ -16,8 +16,8 @@ Example Input
 		{
 			email: 'user@example.com',
 			name: 'My first sequence diagram',
-			elements: { ... },
-			connections: { ... }
+			elements: { },
+			connections: { }
 		}
 ```
 
