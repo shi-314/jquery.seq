@@ -19,7 +19,7 @@ Example Input
 			elements: { ... },
 			connections: { ... }
 		}
-´´´
+```
 
 Example Output
 
@@ -27,6 +27,6 @@ Example Output
 		{
 			_id: 'asd65asd64as65d4a6s54dasd87875'
 		}
-´´´
+```
 
 Error: Errors may occur when your sequence data is incomplete
