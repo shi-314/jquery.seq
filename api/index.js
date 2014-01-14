@@ -36,14 +36,6 @@ app.all('*', function (req, res, next) {
 
 });
 
-app.get(version + '/getList/:mail', function (req, res) {
-
-	res.json({
-		status: 'well well well...' + req.params.mail
-	});
-
-});
-
 app.put(version + '/save', function (req, res) {
 
 	var obj = {
@@ -70,11 +62,20 @@ app.put(version + '/save', function (req, res) {
 app.get(version + '/list/:email', function (req, res) {
 
 	console.log('fetching list for ' + req.params.email);
+
 	var list = app.sequences.find({email: req.params.email}).toArray(function (what, list) {
 		res.json(list);
 	});
 
 });
+
+app.get('*', function(req, res){
+
+	res.status(404);
+	res.send({ error: 'Not found' });
+
+});
+
 
 app.listen(8080);
 console.log('Listening on port ' + port + ' ...');
